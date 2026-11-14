@@ -1,0 +1,249 @@
+{
+  "entities": {
+    "UserProfilePublic": {
+      "title": "UserProfilePublic",
+      "description": "Non-PII operator profile metadata for ResQ-Net role display and ownership checks.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Firebase Auth UID"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "role": {
+          "type": "string",
+          "enum": ["citizen", "officer", "admin"],
+          "maxLength": 16
+        },
+        "agency": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "displayName", "role", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Isolated PII record containing verified operator email.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "createdAt", "updatedAt"]
+    },
+    "AdminRegistry": {
+      "title": "AdminRegistry",
+      "description": "Trusted administrator registry verified by server rules.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "grantedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "grantedAt"]
+    },
+    "SimulationRun": {
+      "title": "SimulationRun",
+      "description": "Saved multi-agent power negotiation run snapshot owned by a verified user.",
+      "type": "object",
+      "properties": {
+        "runId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "ownerId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "profile": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 48
+        },
+        "baseCapacityMW": {
+          "type": "number"
+        },
+        "fairnessWeight": {
+          "type": "number"
+        },
+        "negotiatedDamage": {
+          "type": "number"
+        },
+        "uncoordinatedDamage": {
+          "type": "number"
+        },
+        "jainsFairness": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "archived"],
+          "maxLength": 16
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "runId",
+        "ownerId",
+        "profile",
+        "baseCapacityMW",
+        "fairnessWeight",
+        "negotiatedDamage",
+        "uncoordinatedDamage",
+        "jainsFairness",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CitizenEscalation": {
+      "title": "CitizenEscalation",
+      "description": "Cloud-synced utility hazard escalation submitted by a verified user.",
+      "type": "object",
+      "properties": {
+        "escalationId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "authorId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 48
+        },
+        "areaName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "maxLength": 16
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["open", "dispatched", "resolved"],
+          "maxLength": 16
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "escalationId",
+        "authorId",
+        "category",
+        "areaName",
+        "severity",
+        "summary",
+        "lat",
+        "lon",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users_public/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfilePublic" },
+      "description": "Publicly scoped non-PII operator metadata."
+    },
+    "/users_private/{userId}": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Owner-isolated private user email record."
+    },
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/AdminRegistry" },
+      "description": "Admin role lookup registry."
+    },
+    "/users_public/{userId}/runs/{runId}": {
+      "schema": { "$ref": "#/entities/SimulationRun" },
+      "description": "Saved negotiation runs belonging to a user."
+    },
+    "/escalations/{escalationId}": {
+      "schema": { "$ref": "#/entities/CitizenEscalation" },
+      "description": "Cloud-persisted incident escalations."
+    }
+  }
+}

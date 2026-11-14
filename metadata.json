@@ -1,0 +1,6 @@
+{
+  "name": "ResQ-Net",
+  "description": "See what fails next, before it happens: how one failure in Bengaluru spreads to water and hospitals.",
+  "requestFramePermissions": ["microphone", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
